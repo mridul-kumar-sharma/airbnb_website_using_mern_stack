@@ -1,6 +1,8 @@
 const { listingSchema, reviewSchema } = require("../schema.js");
 const Listing = require("../models/listing.js");
 const Review = require("../models/review.js");
+const ExpressError = require("../utils/ExpressError.js")
+
 // User authentication method in passport
 const isUserLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
@@ -54,7 +56,7 @@ const isOwner = async (req, res, next) => {
   next();
 }
 
-//Check the owner before editing , updating and deleting
+//Check the author of the review before deleting it
 const isAuthor = async (req, res, next) => {
   let {id, reviewId } = req.params;
   let review = await Review.findById(reviewId)
