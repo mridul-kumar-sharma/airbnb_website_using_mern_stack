@@ -18,13 +18,12 @@ const Review = require("./models/review.js")
 const listings = require("./routes/Listing.js");
 const reviews = require("./routes/Review.js")
 const users = require("./routes/Auth.js")
-const session = require("express-session")
+const session = require("express-session")  
 const flash = require("connect-flash")
 const passport = require("passport")
 const LocalStrategy = require("passport-local")
 const User = require("./models/user.js");
 const MongoStore = require("connect-mongo");
-// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 const dbUrl = process.env.ATLAS_DB_URL;
 
 main()
@@ -58,7 +57,7 @@ const store = MongoStore.create({
   
 })
 
-store.on("error",(err)=>{
+store.on("error",()=>{
   console.log("Error in Mongo Session Store !",err);
 })
 
@@ -73,11 +72,6 @@ const sessionOptions = {
     httpOnly: true
   }
 }
-
-// app.get("/", (req, res) => {
-//   res.send("This is root")
-// });
-
 
 app.use(session(sessionOptions));
 app.use(flash())
@@ -101,20 +95,6 @@ app.use('/listings',listings)
 app.use('/listings/:id/reviews',reviews)
 app.use("/",users)
 
-// app.get("/testListing", async (req, res) => {
-//   let sampleListing = new Listing({
-//     title: "My New Villa",
-//     description: "By the beach",
-//     price: 1200,
-//     location: "Calangute, Goa",
-//     country: "India",
-//   });
-
-//   await sampleListing.save();
-//   console.log("sample was saved");
-//   res.send("successful testing");
-// });
-
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found!"));
 })
@@ -129,6 +109,6 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("error.ejs", { err, statusCode });
 })
 
-app.listen(3000, () => {
-  console.log("http://localhost:3000");
+app.listen(8080, () => {
+  console.log("http://localhost:8080");
 });
