@@ -1,6 +1,5 @@
 if(process.env.NODE_ENV != "production"){
   require("dotenv").config();
-  console.log(process.env.MAP_TOKEN)
 }
 
 
@@ -47,7 +46,6 @@ app.use(express.static(path.join(__dirname, "/public")))
 app.use(methodOverride("_method"));
 
 
-
 const store = MongoStore.create({
   mongoUrl:dbUrl,
   crypto :{
@@ -55,6 +53,9 @@ const store = MongoStore.create({
   },
   touchAfter:24 * 3600,
   
+})
+app.get("/",(req,res)=>{
+  res.redirect('/listings')
 })
 
 store.on("error",()=>{
@@ -89,6 +90,7 @@ app.use((req,res,next)=>{
   res.locals.currUser = req.user;
   next();
 })
+
 
 
 app.use('/listings',listings)
